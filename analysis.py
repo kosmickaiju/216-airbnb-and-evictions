@@ -16,7 +16,7 @@ print(evictions.head())
 evictions = evictions[evictions['Residential/Commercial'] == 'Residential'].copy() #residential evictions only
 evictions['BOROUGH'] = evictions['BOROUGH'].str.title()
 
-listings.drop(columns=['price', 'license', 'host_profile_id']) #these columns are empty and/or irrelevant
+listings = listings.drop(columns=['price', 'license', 'host_profile_id']) #these columns are empty and/or irrelevant
 listings['is_entire_home'] = listings['room_type'] == 'Entire home/apt'
 
 eviction_counts = (evictions[evictions['Residential/Commercial'] == 'Residential'].groupby('BOROUGH').size().reset_index(name='eviction_count'))
@@ -25,6 +25,8 @@ listing_agg['entire_home_proportion'] = (listing_agg['entire_home_count'] / list
 merged = pd.merge(eviction_counts, listing_agg, left_on='BOROUGH', right_on='neighbourhood_group', how='inner') #merging dataset borough columns
 
 #visualizations
+
+#plot 1:
 fig, ax = plt.subplots(figsize=(8, 5))
 sns.regplot(data=merged, x='entire_home_proportion', y='eviction_count', ax=ax, scatter_kws={'s': 100, 'zorder': 5, 'alpha': 0.8}, line_kws={'color': 'black', 'linestyle': '--', 'linewidth': 1.5})
 for _, row in merged.iterrows():
@@ -34,5 +36,17 @@ ax.set_ylabel('Total Eviction Count')
 ax.set_title('Entire-Home Airbnb Proportion vs. Evictions by Borough')
 plt.tight_layout()
 plt.savefig('scatter_borough.png', dpi=150)
+
+#plot 2:
+merged_sorted = merged.sort_values('eviction_count', ascending=False)
+
+plt.figure(figsize=(8,5))
+sns.catplot(kind='bar', data=merged_sorted, x='BOROUGH', y='eviction_count')
+plt.title('Evictions by Borough')
+plt.ylabel('Total Evictions')
+plt.xlabel('Borough')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('bar_evictions.png', dpi=150)
 
 #data analysis/statistical significance
