@@ -26,5 +26,14 @@ listing_agg['entire_home_proportion'] = (listing_agg['entire_home_count'] / list
 merged = pd.merge(eviction_counts, listing_agg, left_on='BOROUGH', right_on='neighbourhood_group', how='inner') #merging dataset borough columns
 
 #visualizations
+fig, ax = plt.subplots(figsize=(8, 5))
+sns.regplot(data=merged, x='entire_home_proportion', y='eviction_count', ax=ax, scatter_kws={'s': 100, 'zorder': 5, 'alpha': 0.8}, line_kws={'color': 'black', 'linestyle': '--', 'linewidth': 1.5})
+for _, row in merged.iterrows():
+    ax.annotate(row['BOROUGH'], xy=(row['entire_home_proportion'], row['eviction_count']), xytext=(6, 4), textcoords='offset points', fontsize=9)
+ax.set_xlabel('Proportion of Entire-Home Airbnb Listings')
+ax.set_ylabel('Total Eviction Count')
+ax.set_title('Entire-Home Airbnb Proportion vs. Evictions by Borough')
+plt.tight_layout()
+plt.savefig('scatter_borough.png', dpi=150)
 
 #data analysis/statistical significance
