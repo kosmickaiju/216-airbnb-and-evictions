@@ -11,7 +11,6 @@ print(listings.head())
 evictions = pd.read_csv("evictions.csv")
 print(evictions.head())
 
-
 '''we should try to analyze by borough bc there are way too many individual neighborhoods in nyc - both datasets have boroughs but we need to clean the data so that they align. so like number of evictions within each borough and see if the density of airbnbs in each borough goes up w eviction rates'''
 #data wrangling
 evictions = evictions[evictions['Residential/Commercial'] == 'Residential'].copy() #residential evictions only
