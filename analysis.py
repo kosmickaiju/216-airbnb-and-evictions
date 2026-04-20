@@ -6,9 +6,9 @@ import seaborn as sns
 from scipy import stats
 
 #reading datasets into dataframes
-listings = pd.read_csv("listings.csv")
+listings = pd.read_csv("data/listings.csv")
 print(listings.head())
-evictions = pd.read_csv("evictions.csv")
+evictions = pd.read_csv("data/evictions.csv")
 print(evictions.head())
 
 '''we should try to analyze by borough bc there are way too many individual neighborhoods in nyc - both datasets have boroughs but we need to clean the data so that they align. so like number of evictions within each borough and see if the density of airbnbs in each borough goes up w eviction rates'''
@@ -35,7 +35,7 @@ ax.set_xlabel('Proportion of Entire-Home Airbnb Listings')
 ax.set_ylabel('Total Eviction Count')
 ax.set_title('Entire-Home Airbnb Proportion vs. Evictions by Borough')
 plt.tight_layout()
-plt.savefig('scatter_borough.png', dpi=150)
+plt.savefig('outputs/scatter_borough.png', dpi=150)
 
 #plot 2:
 merged_sorted = merged.sort_values('eviction_count', ascending=False)
@@ -47,6 +47,6 @@ plt.ylabel('Total Evictions')
 plt.xlabel('Borough')
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('bar_evictions.png', dpi=150)
+plt.savefig('outputs/bar_evictions.png', dpi=150)
 
 #data analysis/statistical significance
